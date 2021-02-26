@@ -44,3 +44,34 @@ func (m *Mutex) GuardBoolError(f func() (bool, error)) (bool, error) {
 	defer m.Unlock()
 	return f()
 }
+
+// UnlockGuard unlocks the mutex, invokes f, and locks the mutex again.
+func (m *Mutex) UnlockGuard(f func()) {
+	m.Unlock()
+	defer m.Lock()
+	f()
+}
+
+// UnlockGuardBool unlocks the mutex, invokes f, and locks the mutex again.
+// The return value is passed through.
+func (m *Mutex) UnlockGuardBool(f func() bool) bool {
+	m.Unlock()
+	defer m.Lock()
+	return f()
+}
+
+// UnlockGuardError unlocks the mutex, invokes f, and locks the mutex again.
+// The return value is passed through.
+func (m *Mutex) UnlockGuardError(f func() error) error {
+	m.Unlock()
+	defer m.Lock()
+	return f()
+}
+
+// UnlockGuardBoolError unlocks the mutex, invokes f, and locks the mutex
+// again.  The return values are passed through.
+func (m *Mutex) UnlockGuardBoolError(f func() (bool, error)) (bool, error) {
+	m.Unlock()
+	defer m.Lock()
+	return f()
+}
